@@ -65,3 +65,24 @@ h1 {
     display: block;
     margin: 0 auto;
 }
+
+.dev-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    animation: colorChange 3s infinite, wave 2s infinite;
+}
+
+@keyframes colorChange {
+    0% { color: #ff0000; }
+    25% { color: #00ff00; }
+    50% { color: #0000ff; }
+    75% { color: #ff00ff; }
+    100% { color: #ff0000; }
+}
+
+@keyframes wave {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
