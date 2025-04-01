@@ -70,7 +70,7 @@ h1 {
     font-size: 18px;
     font-weight: bold;
     margin-top: 10px;
-    animation: colorChange 3s infinite, wave 2s infinite;
+    animation: colorChange 3s infinite, wave 3s infinite;
 }
 
 @keyframes colorChange {
