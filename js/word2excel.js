@@ -88,7 +88,7 @@ function convertToExcel() {
                 });
 
                 // Tạo và tải file Excel
-                XLSX.writeFile(wb, 'output.xlsx');
+                XLSX.writeFile(wb, 'AULAC_output.xlsx');
             })
             .catch(function(err) {
                 console.error(err);
