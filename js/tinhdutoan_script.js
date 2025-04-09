@@ -23,6 +23,24 @@ const csvConfigs = [
     data: [],
     thresholds: [],
   },
+  {
+    label: "Chi phí thẩm tra nghiên cứu tiền khả thi",
+    file: "data/chi_phi_tham_tra_nghien_cuu_tien_kha_thi.csv",
+    data: [],
+    thresholds: [],
+  },
+  {
+    label: "Chi phí thẩm tra nghiên cứu khả thi",
+    file: "data/chi_phi_tham_tra_nghien_cuu_kha_thi.csv",
+    data: [],
+    thresholds: [],
+  },
+  {
+    label: "Chi phí thẩm tra thiết kế xây dựng",
+    file: "data/chi_phi_tham_tra_thiet_ke_xay_dung.csv",
+    data: [],
+    thresholds: [],
+  },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
