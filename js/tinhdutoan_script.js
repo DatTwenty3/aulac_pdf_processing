@@ -41,6 +41,18 @@ const csvConfigs = [
     data: [],
     thresholds: [],
   },
+  {
+    label: "Chi phí thẩm tra dự toán xây dựng",
+    file: "data/chi_phi_tham_tra_du_toan_xay_dung.csv",
+    data: [],
+    thresholds: [],
+  },
+  {
+    label: "Chi phí đánh giá lập hồ sơ mời thầu, đánh giá thầu thi công xây dựng",
+    file: "data/chi_phi_lap_ho_so_moi_thau_danh_gia_thau_thi_cong_xd.csv",
+    data: [],
+    thresholds: [],
+  },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
