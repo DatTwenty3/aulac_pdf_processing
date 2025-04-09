@@ -25,7 +25,9 @@ h1 {
 
 .buttons {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .button {
@@ -36,22 +38,12 @@ h1 {
     border-radius: 5px;
     font-size: 16px;
     transition: background-color 0.3s;
+    width: 200px; /* 👈 Kích thước cố định cho mọi nút */
+    text-align: center; /* căn giữa nội dung trong nút */
 }
 
 .button:hover {
     background-color: #0056b3;
-}
-
-@media (max-width: 600px) {
-    .buttons {
-        flex-direction: column;
-    }
-    .button {
-        margin-bottom: 10px;
-    }
-    .button:last-child {
-        margin-bottom: 0;
-    }
 }
 
 .logo-container {
