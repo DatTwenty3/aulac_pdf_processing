@@ -195,21 +195,27 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Vui lòng nhập đầy đủ Gxd, Gtb và chọn loại công trình.");
       return;
     }
-
+  
     // Lấy giá trị của design selections nếu có (dành cho chi phí thiết kế kỹ thuật/bản vẽ thi công)
     const capDesignSelect = document.getElementById("capCongTrinhSelect");
     const buocSelect = document.getElementById("buocSelect");
     const selectedCap = capDesignSelect ? capDesignSelect.value : "";
     const selectedBuoc = buocSelect ? buocSelect.value : "";
-
+  
+    // Nếu có config yêu cầu chọn thiết kế nhưng người dùng chưa chọn đủ thì báo lỗi
+    if (!selectedCap || !selectedBuoc) {
+      // Chỉ cảnh báo nếu tồn tại ít nhất một cấu hình yêu cầu selection
+      const designConfigExists = csvConfigs.some(c => c.requireDesignSelections);
+      if (designConfigExists) {
+        alert("Vui lòng chọn đầy đủ Cấp công trình và Bước thiết kế cho chi phí thiết kế kỹ thuật/bản vẽ thi công.");
+        return;
+      }
+    }
+  
     const results = csvConfigs.map((config) => {
-      // Nếu đây là config yêu cầu chọn cấp công trình và bước thiết kế
       let row = null;
       if (config.requireDesignSelections) {
-        if (!selectedCap || !selectedBuoc) {
-          alert("Cấp công trình và Bước thiết kế cho chi phí thiết kế kỹ thuật/bản vẽ thi công còn thiếu. Bỏ qua nếu không áp dụng.");
-          return null;
-        }
+        // Tìm hàng thỏa mãn cả 3 điều kiện: Loại công trình, Cấp công trình và Bước thiết kế
         row = config.data.find(
           (r) =>
             r["Loại công trình"] === type &&
@@ -219,27 +225,36 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         row = config.data.find((r) => r["Loại công trình"] === type);
       }
-      // Nếu không tìm thấy dữ liệu
+      // Nếu không tìm thấy dữ liệu, trả về kết quả với giá trị null
       if (!row) return {
         label: config.label,
         value: null,
         noteAbove: config.noteAbove,
         noteBelow: config.noteBelow,
       };
-
+  
       const val = interpolate(row, config.thresholds, G);
+      // Nếu config yêu cầu lựa chọn thiết kế, thay đổi nhãn dựa trên số bước
+      let resultLabel = config.label;
+      if (config.requireDesignSelections) {
+        if (selectedBuoc.trim() === "3 bước") {
+          resultLabel = "Chi phí thiết kế kỹ thuật";
+        } else if (selectedBuoc.trim() === "2 bước") {
+          resultLabel = "Chi phí thiết kế bản vẽ thi công";
+        }
+      }
       return {
-        label: config.label,
+        label: resultLabel,
         value: val,
         noteAbove: config.noteAbove,
         noteBelow: config.noteBelow,
       };
-    }).filter(r => r !== null); // loại bỏ các giá trị null do thiếu lựa chọn đối với config yêu cầu design selections
-
+    }).filter(r => r !== null); // loại bỏ các giá trị null
+  
     latestResults = results;
     populateCostTypeSelect(results);
     document.getElementById("resultSection").style.display = "block";
-  });
+  });  
 
   document.getElementById("costTypeSelect").addEventListener("change", () => {
     const selectedLabel = document.getElementById("costTypeSelect").value;
