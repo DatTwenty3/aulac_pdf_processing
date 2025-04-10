@@ -109,3 +109,21 @@ body {
   display: block;
   margin: 0 auto;
 }
+
+.note {
+  font-size: 0.95rem;
+  margin: 0.5rem 0;
+  font-style: italic;
+  color: #555;
+}
+
+.note-above {
+  color: #d9534f; /* màu đỏ đẹp nhẹ */
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.note-below {
+  color: #555; /* giữ màu xám nhạt cho phần dưới */
+  margin-top: 0.5rem;
+}
