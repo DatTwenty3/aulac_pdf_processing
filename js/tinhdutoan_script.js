@@ -114,6 +114,22 @@ const csvConfigs = [
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
     noteBelow: "",
   },
+  {
+    label: "Phí thẩm định thiết kế xây dựng triển khai sau thiết kế cơ sở",
+    file: "data/phi_tham_dinh_thiet_ke_xay_dung_trien_khai_sau_TKCS.csv",
+    data: [],
+    thresholds: [],
+    noteAbove: "*Theo thông tư 27/2023/TT-BTC",
+    noteBelow: "",
+  },
+  {
+    label: "Phí thẩm định dự toán xây dựng",
+    file: "data/phi_tham_dinh_du_toan_xd.csv",
+    data: [],
+    thresholds: [],
+    noteAbove: "*Theo thông tư 27/2023/TT-BTC",
+    noteBelow: "",
+  },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
