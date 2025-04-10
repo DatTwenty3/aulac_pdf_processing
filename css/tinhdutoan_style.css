@@ -95,6 +95,14 @@ body {
   font-weight: bold;
 }
 
+.result-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #e6f9e6;
+  border-left: 4px solid #66bb6a;
+  border-radius: 4px;
+}
+
 .logo {
   max-width: 120px; /* Giới hạn kích thước logo */
   height: auto;

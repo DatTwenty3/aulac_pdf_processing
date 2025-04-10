@@ -146,17 +146,35 @@ document.getElementById("calcBtn").addEventListener("click", () => {
     };
   });
 
-  displayResults(results);
+  window.currentResults = results;
+  populateCostTypeDropdown(results);
 });
 
-function displayResults(results) {
-  const container = document.getElementById("results");
-  container.innerHTML = results
-    .map(
-      (res) => `
-        <h2>${res.label}</h2>
-        <p>Định mức: <span class="highlight">${res.value !== null ? res.value.toFixed(3) + " %" : "Không xác định"}</span></p>
-      `
-    )
-    .join("");
+function populateCostTypeDropdown(results) {
+  const select = document.getElementById("costTypeSelect");
+  select.innerHTML = ""; // Reset dropdown
+
+  results.forEach((res, index) => {
+    const opt = document.createElement("option");
+    opt.value = index;
+    opt.textContent = res.label;
+    select.appendChild(opt);
+  });
+
+  // Hiển thị vùng kết quả và mặc định dòng đầu tiên
+  document.getElementById("resultSection").style.display = "block";
+  displaySingleResult(results[0]);
+
+  select.onchange = () => {
+    const selected = results[select.value];
+    displaySingleResult(selected);
+  };
+}
+
+function displaySingleResult(result) {
+  const container = document.getElementById("singleResult");
+  container.innerHTML = `
+    <h2>${result.label}</h2>
+    <p>Định mức: <span class="highlight">${result.value !== null ? result.value.toFixed(3) + " %" : "Không xác định"}</span></p>
+  `;
 }
