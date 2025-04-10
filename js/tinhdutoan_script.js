@@ -48,8 +48,26 @@ const csvConfigs = [
     thresholds: [],
   },
   {
-    label: "Chi phí đánh giá lập hồ sơ mời thầu, đánh giá thầu thi công xây dựng",
+    label: "Chi phí lập hồ sơ mời thầu, đánh giá hồ sơ dự thầu thi công xây dựng",
     file: "data/chi_phi_lap_ho_so_moi_thau_danh_gia_thau_thi_cong_xd.csv",
+    data: [],
+    thresholds: [],
+  },
+  {
+    label: "Chi phí lập hồ sơ mời thầu, đánh giá hồ sơ dự thầu mua sắm vật tư, thiết bị",
+    file: "data/chi_phi_lap_ho_so_moi_thau_danh_gia_ho_so_du_thau_mua_sam_vat_tu_thiet_bi.csv",
+    data: [],
+    thresholds: [],
+  },
+  {
+    label: "Chi phí giám sát thi công xây dựng",
+    file: "data/chia_phi_giam_sat_thi_cong_xay_dung.csv",
+    data: [],
+    thresholds: [],
+  },
+  {
+    label: "Chi phí giám sát lắp đặt thiết bị",
+    file: "data/chi_phi_giam_sat_lap_dat_thiet_bi.csv",
     data: [],
     thresholds: [],
   },
