@@ -5,7 +5,9 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `- Chi phí quản lý dự án xác định theo định mức ban hành tại bảng 1.1 kèm theo Thông tư này chưa bao gồm chi phí dự phòng.
+                - Chi phí quản lý dự án xác định theo định mức ban hành tại bảng 1.1 kèm theo Thông tư này chưa bao gồm chi phí để chủ đầu tư trực tiếp thực hiện công việc thẩm định (không thuê đơn vị tư vấn thẩm tra) thiết kế xây dựng triển khai sau thiết kế cơ sở và thẩm định dự toán xây dựng. Chi phí để chủ đầu tư trực tiếp thẩm định các công việc trên xác định bằng 80% chi phí thẩm tra thiết kế, dự toán xây dựng theo hướng dẫn tại Thông tư này và bổ sung thêm vào nguồn chi phí quản lý dự án.
+                - Chi phí quản lý dự án của dự án đầu tư xây dựng công trình hàng không xác định theo định mức chi phí của loại công trình dân dụng.`
   },
   {
     label: "Chi phí lập báo cáo nghiên cứu tiền khả thi",
@@ -13,7 +15,7 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: "",
   },
   {
     label: "Chi phí lập báo cáo nghiên cứu khả thi",
@@ -21,7 +23,7 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: "",
   },
   {
     label: "Chi phí lập báo cáo nghiên cứu kinh tế - kỹ thuật",
@@ -29,7 +31,7 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: "Chi phí lập báo cáo kinh tế - kỹ thuật xác định theo định mức ban hành tại bảng 2.3 kèm theo Thông tư này (chưa bao gồm thuế GTGT) tối thiểu không nhỏ hơn 5.000.000 đồng.",
   },
   {
     label: "Chi phí thẩm tra nghiên cứu tiền khả thi",
@@ -37,15 +39,22 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `Chi phí thẩm tra báo cáo nghiên cứu tiền khả thi xác định theo định mức ban hành tại bảng 2.14 kèm theo Thông tư này phân chia như sau:
+                - Thẩm tra thiết kế sơ bộ: 35%;
+                - Thẩm tra sơ bộ tổng mức đầu tư: 35%;
+                - Thẩm tra các nội dung còn lại của dự án: 30%.`
   },
   {
-    label: "Chi phí thẩm tra nghiên cứu khả thi",
+    label: "Chi phí thẩm tra báo cáo nghiên cứu khả thi",
     file: "data/chi_phi_tham_tra_nghien_cuu_kha_thi.csv",
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `- Chi phí thẩm tra báo cáo nghiên cứu khả thi xác định theo định mức ban hành tại bảng 2.15 kèm theo Thông tư này phân chia như sau:
+                + Thẩm tra thiết kế cơ sở: 35%;
+                + Thẩm tra tổng mức đầu tư: 35%;
+                + Thẩm tra các nội dung còn lại của dự án: 30%.
+                - Trường hợp dự án có yêu cầu phải thẩm tra thiết kế công nghệ của dự án thì chi phí thẩm tra thiết kế công nghệ bổ sung bằng 20% của chi phí thẩm tra báo cáo nghiên cứu khả thi.`
   },
   {
     label: "Chi phí thẩm tra thiết kế xây dựng",
@@ -53,7 +62,10 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `- Chi phí thẩm tra thiết kế của công trình có sử dụng thiết kế điển hình, thiết kế mẫu do cơ quan có thẩm quyền ban hành điều chỉnh với hệ số k = 0,36 đối với công trình thứ hai trở đi.
+                - Đối với công trình có yêu cầu thiết kế 3 bước nếu có yêu cầu thẩm tra cả thiết kế kỹ thuật và thiết kế bản vẽ thi công thì chi phí thẩm tra thiết kế kỹ thuật xác định theo định mức ban hành tại bảng 2.16 kèm theo Thông tư này, chi phí thẩm tra thiết kế bản vẽ thi công xác định bằng 40% chi phí thẩm tra thiết kế kỹ thuật.
+                - Chi phí thẩm tra thiết kế công trình san nền tính bằng 40% chi phí thẩm tra thiết kế công trình giao thông.
+                - Chi phí thẩm tra thiết kế xác định theo định mức (chưa bao gồm thuế GTGT) tối thiểu không nhỏ hơn 2.000.000 đồng.`
   },
   {
     label: "Chi phí thẩm tra dự toán xây dựng",
@@ -61,7 +73,10 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `- Đối với công trình có yêu cầu thiết kế 3 bước nếu có yêu cầu thẩm tra cả dự toán thiết kế kỹ thuật và thẩm tra dự toán thiết kế bản vẽ thi công thì chi phí thẩm tra xác định riêng cho từng dự toán theo định mức ban hành tại bảng 2.17 kèm theo Thông tư này.
+                - Chi phí thẩm tra dự toán dự toán xây dựng công trình đối với công trình có sử dụng thiết kế điển hình, thiết kế mẫu do cơ quan có thẩm quyền ban hành điều chỉnh với hệ số k = 0,36 đối với công trình thứ hai trở đi.
+                - Chi phí thẩm tra dự toán công trình san nền tính bằng 40% định mức chi phí thẩm tra dự toán công trình giao thông.
+                - Chi phí thẩm tra dự toán xác định theo định mức tỷ lệ phần trăm (chưa bao gồm thuế GTGT) tối thiểu không nhỏ hơn 2.000.000 đồng.`
   },
   {
     label: "Chi phí lập hồ sơ mời thầu, đánh giá hồ sơ dự thầu thi công xây dựng",
@@ -69,7 +84,9 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `Chi phí lập hồ sơ mời thầu và đánh giá hồ sơ dự thầu thi công xây dựng tính theo định mức ban hành tại bảng 2.19 kèm theo Thông tư này phân chia như sau:
+                - Lập hồ sơ mời thầu: 45%;
+                - Đánh giá hồ sơ dự thầu: 55%.`
   },
   {
     label: "Chi phí lập hồ sơ mời thầu, đánh giá hồ sơ dự thầu mua sắm vật tư, thiết bị",
@@ -77,7 +94,9 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: `Chi phí lập hồ sơ mời thầu và đánh giá hồ sơ dự thầu thi công xây dựng tính theo định mức ban hành tại bảng 2.20 kèm theo Thông tư này phân chia như sau:
+                - Lập hồ sơ mời thầu: 45%;
+                - Đánh giá hồ sơ dự thầu: 55%.`
   },
   {
     label: "Chi phí giám sát thi công xây dựng",
@@ -85,7 +104,7 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: "",
   },
   {
     label: "Chi phí giám sát lắp đặt thiết bị",
@@ -93,7 +112,7 @@ const csvConfigs = [
     data: [],
     thresholds: [],
     noteAbove: "*Theo thông tư 12/2021/TT-BXD",
-    noteBelow: "Ghi chú dưới - chi phí quản lý dự án",
+    noteBelow: "",
   },
 ];
 
@@ -223,7 +242,7 @@ function displaySingleResult(res) {
   container.innerHTML = `
     ${res.noteAbove ? `<p class="note note-above">${res.noteAbove}</p>` : ""}
     <h2>${res.label}</h2>
-    <p>Định mức: <span class="highlight">${res.value !== null ? res.value.toFixed(3) + " %" : "Không xác định"}</span></p>
-    ${res.noteBelow ? `<p class="note note-below">${res.noteBelow}</p>` : ""}
+    <p>Định mức: <span class="highlight">${res.value !== null ? res.value.toFixed(3) + " %" : "Không xác định"}</span></p>
+    ${res.noteBelow ? `<p class="note note-below">${res.noteBelow.replace(/\n/g, "<br>")}</p>` : ""}
   `;
 }
