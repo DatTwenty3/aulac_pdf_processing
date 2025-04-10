@@ -16,8 +16,18 @@
     <h1>Tính định mức các chi phí</h1>
 
     <div class="form-group">
-      <label for="gValue">Chi phí xây dựng và thiết bị trước thuế (G): </label>
-      <input type="number" id="gValue" step="any" placeholder="Nhập giá trị G (đơn vị tỷ đồng)" />
+      <label for="gxdValue">Chi phí xây dựng trước thuế (Gxd): </label>
+      <input type="number" id="gxdValue" step="any" placeholder="Nhập Gxd (tỷ đồng)" />
+    </div>
+
+    <div class="form-group">
+      <label for="gtbValue">Chi phí thiết bị trước thuế (Gtb): </label>
+      <input type="number" id="gtbValue" step="any" placeholder="Nhập Gtb (tỷ đồng)" />
+    </div>
+
+    <div class="form-group">
+      <strong>Chi phí xây dựng và thiết bị trước thuế (G):</strong>
+      <span id="gTotalDisplay">0.000</span> tỷ đồng
     </div>
 
     <div class="form-group">

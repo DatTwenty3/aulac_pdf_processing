@@ -81,7 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
       download: true,
       header: true,
       complete: (res) => {
-        config.data = res.data;
+        config.data = res.data.filter(
+          (row) => row["Loại công trình"] && row["Loại công trình"].trim() !== ""
+        );
         config.thresholds = res.meta.fields
           .filter((f) => f !== "Loại công trình")
           .map((f) => ({
@@ -95,11 +97,59 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
   });
+
+  // Lắng nghe khi người dùng nhập Gxd hoặc Gtb để tự động cập nhật G
+  const gxdInput = document.getElementById("gxdValue");
+  const gtbInput = document.getElementById("gtbValue");
+  const gDisplay = document.getElementById("gTotalDisplay");
+
+  function updateGDisplay() {
+    const gxd = parseFloat(gxdInput.value) || 0;
+    const gtb = parseFloat(gtbInput.value) || 0;
+    const g = gxd + gtb;
+    gDisplay.textContent = g.toFixed(3);
+  }
+
+  gxdInput.addEventListener("input", updateGDisplay);
+  gtbInput.addEventListener("input", updateGDisplay);
+
+  document.getElementById("calcBtn").addEventListener("click", () => {
+    const G = parseFloat(gxdInput.value || 0) + parseFloat(gtbInput.value || 0);
+    const type = document.getElementById("typeSelect").value;
+    if (isNaN(G) || G <= 0 || !type) {
+      alert("Vui lòng nhập đầy đủ Gxd, Gtb và chọn loại công trình.");
+      return;
+    }
+
+    const results = csvConfigs.map((config) => {
+      const row = config.data.find((r) => r["Loại công trình"] === type);
+      const val = interpolate(row, config.thresholds, G);
+      return {
+        label: config.label,
+        value: val,
+      };
+    });
+
+    populateCostTypeSelect(results);
+    document.getElementById("resultSection").style.display = "block";
+  });
+
+  document.getElementById("costTypeSelect").addEventListener("change", () => {
+    const selectedLabel = document.getElementById("costTypeSelect").value;
+    const result = latestResults.find((r) => r.label === selectedLabel);
+    displaySingleResult(result);
+  });
 });
+
+let latestResults = [];
 
 function populateTypeDropdown() {
   const sel = document.getElementById("typeSelect");
-  const uniqueTypes = new Set(csvConfigs[0].data.map((r) => r["Loại công trình"]));
+  const uniqueTypes = new Set(
+    csvConfigs[0].data
+      .map((r) => r["Loại công trình"])
+      .filter((v) => v && v.trim() !== "")
+  );
   uniqueTypes.forEach((type) => {
     const opt = document.createElement("option");
     opt.value = type;
@@ -129,52 +179,23 @@ function interpolate(row, thresholds, G) {
   return null;
 }
 
-document.getElementById("calcBtn").addEventListener("click", () => {
-  const G = parseFloat(document.getElementById("gValue").value);
-  const type = document.getElementById("typeSelect").value;
-  if (isNaN(G) || !type) {
-    alert("Vui lòng nhập giá trị G và chọn loại công trình.");
-    return;
-  }
-
-  const results = csvConfigs.map((config) => {
-    const row = config.data.find((r) => r["Loại công trình"] === type);
-    const val = interpolate(row, config.thresholds, G);
-    return {
-      label: config.label,
-      value: val,
-    };
-  });
-
-  window.currentResults = results;
-  populateCostTypeDropdown(results);
-});
-
-function populateCostTypeDropdown(results) {
+function populateCostTypeSelect(results) {
+  latestResults = results;
   const select = document.getElementById("costTypeSelect");
-  select.innerHTML = ""; // Reset dropdown
-
-  results.forEach((res, index) => {
+  select.innerHTML = '<option value="" disabled selected>-- Chọn loại chi phí --</option>';
+  results.forEach((res) => {
     const opt = document.createElement("option");
-    opt.value = index;
+    opt.value = res.label;
     opt.textContent = res.label;
     select.appendChild(opt);
   });
-
-  // Hiển thị vùng kết quả và mặc định dòng đầu tiên
-  document.getElementById("resultSection").style.display = "block";
-  displaySingleResult(results[0]);
-
-  select.onchange = () => {
-    const selected = results[select.value];
-    displaySingleResult(selected);
-  };
+  document.getElementById("singleResult").innerHTML = "";
 }
 
-function displaySingleResult(result) {
+function displaySingleResult(res) {
   const container = document.getElementById("singleResult");
   container.innerHTML = `
-    <h2>${result.label}</h2>
-    <p>Định mức: <span class="highlight">${result.value !== null ? result.value.toFixed(3) + " %" : "Không xác định"}</span></p>
+    <h2>${res.label}</h2>
+    <p>Định mức: <span class="highlight">${res.value !== null ? res.value.toFixed(3) + " %" : "Không xác định"}</span></p>
   `;
 }
