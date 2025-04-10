@@ -130,11 +130,22 @@ const csvConfigs = [
     noteAbove: "*Theo thông tư 27/2023/TT-BTC",
     noteBelow: "",
   },
+  // Config mới cho "Chi phí thiết kế kỹ thuật/bản vẽ thi công"
+  {
+    label: "Chi phí thiết kế kỹ thuật/bản vẽ thi công",
+    file: "data/dinh_muc_cap_cong_trinh.csv",
+    data: [],
+    thresholds: [],
+    noteAbove: "*Theo thông tư 12/2021/TT-BXD",
+    noteBelow: "",
+    requireDesignSelections: true,
+  },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
   let loadedCount = 0;
 
+  // Parse tất cả CSV
   csvConfigs.forEach((config, index) => {
     Papa.parse(config.file, {
       download: true,
@@ -143,8 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
         config.data = res.data.filter(
           (row) => row["Loại công trình"] && row["Loại công trình"].trim() !== ""
         );
+        // Xác định các threshold dựa trên các header số, ngoại trừ các cột đặc biệt của file thiết kế có thêm Cấp công trình, Bước
         config.thresholds = res.meta.fields
-          .filter((f) => f !== "Loại công trình")
+          .filter((f) => !["Loại công trình", "Cấp công trình", "Bước"].includes(f))
           .map((f) => ({
             key: f,
             value: parseFloat(f.replace(/[^0-9.]/g, "")),
@@ -152,7 +164,11 @@ document.addEventListener("DOMContentLoaded", () => {
           .sort((a, b) => a.value - b.value);
 
         loadedCount++;
-        if (loadedCount === csvConfigs.length) populateTypeDropdown();
+        // Nếu đã load hết các file CSV
+        if (loadedCount === csvConfigs.length) {
+          populateTypeDropdown();
+          populateDesignDropdowns(); // Dành cho file "dinh_muc_cap_cong_trinh.csv"
+        }
       },
     });
   });
@@ -180,8 +196,37 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Lấy giá trị của design selections nếu có (dành cho chi phí thiết kế kỹ thuật/bản vẽ thi công)
+    const capDesignSelect = document.getElementById("capCongTrinhSelect");
+    const buocSelect = document.getElementById("buocSelect");
+    const selectedCap = capDesignSelect ? capDesignSelect.value : "";
+    const selectedBuoc = buocSelect ? buocSelect.value : "";
+
     const results = csvConfigs.map((config) => {
-      const row = config.data.find((r) => r["Loại công trình"] === type);
+      // Nếu đây là config yêu cầu chọn cấp công trình và bước thiết kế
+      let row = null;
+      if (config.requireDesignSelections) {
+        if (!selectedCap || !selectedBuoc) {
+          alert("Cấp công trình và Bước thiết kế cho chi phí thiết kế kỹ thuật/bản vẽ thi công còn thiếu. Bỏ qua nếu không áp dụng.");
+          return null;
+        }
+        row = config.data.find(
+          (r) =>
+            r["Loại công trình"] === type &&
+            r["Cấp công trình"] === selectedCap &&
+            r["Bước"] === selectedBuoc
+        );
+      } else {
+        row = config.data.find((r) => r["Loại công trình"] === type);
+      }
+      // Nếu không tìm thấy dữ liệu
+      if (!row) return {
+        label: config.label,
+        value: null,
+        noteAbove: config.noteAbove,
+        noteBelow: config.noteBelow,
+      };
+
       const val = interpolate(row, config.thresholds, G);
       return {
         label: config.label,
@@ -189,8 +234,9 @@ document.addEventListener("DOMContentLoaded", () => {
         noteAbove: config.noteAbove,
         noteBelow: config.noteBelow,
       };
-    });
+    }).filter(r => r !== null); // loại bỏ các giá trị null do thiếu lựa chọn đối với config yêu cầu design selections
 
+    latestResults = results;
     populateCostTypeSelect(results);
     document.getElementById("resultSection").style.display = "block";
   });
@@ -202,10 +248,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Mảng lưu kết quả mới nhất
 let latestResults = [];
 
 function populateTypeDropdown() {
   const sel = document.getElementById("typeSelect");
+  // Dựa trên file CSV đầu tiên (ví dụ: chi phí quản lý dự án)
   const uniqueTypes = new Set(
     csvConfigs[0].data
       .map((r) => r["Loại công trình"])
@@ -216,6 +264,39 @@ function populateTypeDropdown() {
     opt.value = type;
     opt.textContent = type;
     sel.appendChild(opt);
+  });
+}
+
+// Hàm populate dropdown cho thiết kế dựa vào file dinh_muc_cap_cong_trinh.csv
+function populateDesignDropdowns() {
+  // Tìm config của chi phí thiết kế kỹ thuật/bản vẽ thi công
+  const designConfig = csvConfigs.find(c => c.requireDesignSelections);
+  if (!designConfig) return;
+
+  // Populate Cấp công trình
+  const capSet = new Set(
+    designConfig.data.map(r => r["Cấp công trình"]).filter(v => v && v.trim() !== "")
+  );
+  const capSelect = document.getElementById("capCongTrinhSelect");
+  capSelect.innerHTML = '<option value="" disabled selected>-- Chọn Cấp công trình --</option>';
+  capSet.forEach(cap => {
+    const opt = document.createElement("option");
+    opt.value = cap;
+    opt.textContent = cap;
+    capSelect.appendChild(opt);
+  });
+
+  // Populate Bước thiết kế
+  const buocSet = new Set(
+    designConfig.data.map(r => r["Bước"]).filter(v => v && v.trim() !== "")
+  );
+  const buocSelect = document.getElementById("buocSelect");
+  buocSelect.innerHTML = '<option value="" disabled selected>-- Chọn Bước thiết kế --</option>';
+  buocSet.forEach(buoc => {
+    const opt = document.createElement("option");
+    opt.value = buoc;
+    opt.textContent = buoc;
+    buocSelect.appendChild(opt);
   });
 }
 
@@ -230,7 +311,8 @@ function interpolate(row, thresholds, G) {
     return parseValue(row[thresholds[thresholds.length - 1].key]);
 
   for (let i = 0; i < thresholds.length - 1; i++) {
-    const lo = thresholds[i], hi = thresholds[i + 1];
+    const lo = thresholds[i],
+          hi = thresholds[i + 1];
     if (G >= lo.value && G <= hi.value) {
       const v1 = parseValue(row[lo.key]);
       const v2 = parseValue(row[hi.key]);
@@ -241,7 +323,6 @@ function interpolate(row, thresholds, G) {
 }
 
 function populateCostTypeSelect(results) {
-  latestResults = results;
   const select = document.getElementById("costTypeSelect");
   select.innerHTML = '<option value="" disabled selected>-- Chọn loại chi phí --</option>';
   results.forEach((res) => {
